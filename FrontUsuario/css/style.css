@@ -1,0 +1,40 @@
+input, button{
+    margin-top: 5px !important;
+    margin-bottom: 5px !important;
+}
+.imglogin{
+    width: 100%;
+    
+}
+.fotouser{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.livro{
+    border:0px;
+  
+}
+
+.precoatual{
+    font-size: 1.2em; 
+    font-weight: bold; 
+    color: #333; 
+    padding: 8px 15px; 
+    background-color: #ffc; 
+    border: 2px solid #e0e0e0;
+    border-radius: 8px; 
+    display: inline-block; 
+    text-align: center; 
+    transition: background-color 0.3s, border-color 0.3s, color 0.3s; 
+    cursor: pointer; 
+}
+
+.precoatual:hover {
+    background-color: #ffa;
+    border-color: #c0c0c0;
+    color: #555;
+}
+
