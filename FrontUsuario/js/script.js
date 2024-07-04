@@ -1,103 +1,104 @@
-function login(){
+function login() {
 
-    const us = document.querySelector("#nomeusuario");
-    const sh = document.querySelector("#senha");
-    
-    //usamos o comando trim para eleminar os espaços
+  const us = document.querySelector("#nomeusuario");
+  const sh = document.querySelector("#senha");
 
-    if(us.value.trim() == "" || sh.value.trim()==""){
-        return alert("Você deve preencher os campos");
-    }
-    
+  //usamos o comando trim para eleminar os espaços
 
-    fetch("http://127.0.0.1:4000/api/v1/users/login",{
-        method:"POST",
-        headers:{
-            "accept":"application/json",
-            "content-type":"application/json"
-        },
-        body:JSON.stringify({
-            nomeusuario:us.value,
-            senha:sh.value
-        })
-    }).then((res)=>res.json())
-    .then((result)=>{
-        console.log(result);
+  if (us.value.trim() == "" || sh.value.trim() == "") {
+    return alert("Você deve preencher os campos");
+  }
+
+
+  fetch("http://127.0.0.1:4000/api/v1/users/login", {
+    method: "POST",
+    headers: {
+      "accept": "application/json",
+      "content-type": "application/json"
+    },
+    body: JSON.stringify({
+      nomeusuario: us.value,
+      senha: sh.value
     })
-    .catch((error)=>console.error(`Erro ao tenta acessar a api ${error}`));
+  }).then((res) => res.json())
+    .then((result) => {
+      console.log(result);
+    })
+    .catch((error) => console.error(`Erro ao tenta acessar a api ${error}`));
 
 
 
 }
 
-function cadastrarUsuario(){
-    const us = document.querySelector("#txtusuario");
-    const sh = document.querySelector("#txtsenha");
-    const ft = document.querySelector("#txtfotoperfil");
+function cadastrarUsuario() {
+  const us = document.querySelector("#txtusuario");
+  const sh = document.querySelector("#txtsenha");
+  const ft = document.querySelector("#txtfotoperfil");
 
-    if(us.value.trim()=="" || sh.value.trim()=="" || ft.value.trim()==""){
-        return alert("Preencha todos os campos");
-    }
-    fetch("http://127.0.0.1:4000/api/v1/users/cadastrar",{
-        method:"POST",
-        headers:{
-            "accept":"application/json",
-            "content-type":"application/json"
-        },
-        body:JSON.stringify({
-            nomeusuario:us.value,
-            senha:sh.value,
-            foto:ft.value
-        })
+  if (us.value.trim() == "" || sh.value.trim() == "" || ft.value.trim() == "") {
+    return alert("Preencha todos os campos");
+  }
+  fetch("http://127.0.0.1:4000/api/v1/users/cadastrar", {
+    method: "POST",
+    headers: {
+      "accept": "application/json",
+      "content-type": "application/json"
+    },
+    body: JSON.stringify({
+      nomeusuario: us.value,
+      senha: sh.value,
+      foto: ft.value
     })
-    .then((res)=>res.json())
-    .then((result)=>{
-        console.log(result);
+  })
+    .then((res) => res.json())
+    .then((result) => {
+      console.log(result);
     })
-    .catch((error)=>console.error(`Erro na api ${error}`))
+    .catch((error) => console.error(`Erro na api ${error}`))
 }
 
-function carregarLivros(){
-    const conteudo = document.querySelector(".conteudo");
-    fetch("http://127.0.0.1:4001/api/v1/livros/detalhes")
-    .then((res)=>res.json())
-    .then((dados)=>{
-        dados.payload.map((rs)=>{
-            let card = `<div class="card col-md-3 livro">
+function carregarLivros() {
+  const conteudo = document.querySelector(".conteudo");
+  fetch("http://127.0.0.1:4001/api/v1/livros/detalhes")
+    .then((res) => res.json())
+    .then((dados) => {
+      dados.payload.map((rs) => {
+        let card = `<div class="card col-md-3 livro">
             <img src=${rs.foto1} class="card-img-top">
             <div class="card-body">
             <h3>${rs.nometitulo}</h3>
               <p class="card-text">Autor:${rs.autor}</p>
               <p class="card-text" style="text-decoration:line-through">De R$ ${rs.precoatual}</p>
-              <p class="card-text">${rs.precodesconto<1 ? rs.precoatual : rs.precodesconto}</p>
+              <p class="card-text">${rs.precodesconto < 1 ? rs.precoatual : rs.precodesconto}</p>
               <a class = "btn btn-primary" href="detalhes.html?idtitulo=${rs.idtitulo}">Saiba mais</a>
             </div>
           </div>`;
 
-            conteudo.innerHTML += card;
+        conteudo.innerHTML += card;
 
-        })
+      })
     })
-    .catch((error)=>console.error(`erro na api ${error}`))
+    .catch((error) => console.error(`erro na api ${error}`))
 
 }
 
-function detalhes(){
-    let id_url = window.location.search.split('=')
-    const conteudo = document.querySelector(".conteudo");
-    
-    
-    fetch("http://localhost:4001/api/v1/livros/detalhes/"+id_url[1])
-    .then((res)=>res.json())
-    .then((dados)=>{
-        dados.payload.map((rs)=>{
-            let card = `<div class="card mb-3"col-md-10 ;">
+function detalhes() {
+  let id_url = window.location.search.split('=')
+  const conteudo = document.querySelector(".conteudo");
+ 
+
+  fetch("http://localhost:4001/api/v1/livros/detalhes/" + id_url[1])
+    .then((res) => res.json())
+    .then((dados) => {
+      dados.payload.map((rs) => {
+        document.querySelector("h2").innerHTML= "Detalhes do livro rs."+rs.nometitulo
+        let card = `<div class="card mb-3"col-md-10 ;">
             <div class="row g-0">
               <div class="col-md-4">
               <div id="carouselExample" class="carousel slide">
               <div class="carousel-inner">
                 <div class="carousel-item active">
-                  <img  src="${rs.foto1}" class="d-block w-100" alt="...">
+                  <img id =imagem  src="${rs.foto1}" class="d-block w-100" alt="...">
                 </div>
                 <div class="carousel-item">
                   <img src="${rs.foto2}" class="d-block w-100" alt="...">
@@ -122,20 +123,81 @@ function detalhes(){
                   <h3 class="card-title">${rs.nometitulo}</h3>
                   <h5 class="card-title"> Autor:${rs.autor}</h5>
                   <p class="card-text">${rs.sinopse}</p>
-                  <p class="card-text precoatual">R$ ${rs.precodesconto<1 ? rs.precoatual: rs.precodesconto}</p>
+                  <p class="card-text precoatual">R$ ${rs.precodesconto < 1 ? rs.precoatual : rs.precodesconto}</p>
+                  <a href =carrinho.html?idlivro=${rs.idtitulo} class="carrinho">
+                  <img src=img/carrinho.png width=40 height=40> incluir no carrinho </a>
                 </div>
               </div>
             </div>
           </div>`;
 
-            conteudo.innerHTML += card;
+        conteudo.innerHTML += card;
 
-        })
+      })
     })
-    .catch((error)=>console.error(`erro na api ${error}`))
+    .catch((error) => console.error(`erro na api ${error}`))
 
 
 }
 
+
+function buscar() {
+  const conteudo = document.querySelector(".conteudo")
+  // limpar o conteudo
+  conteudo.innerHTML = ""
+  // obtendo  o texto escrito na caixa de busca 
+  let palavra = document.querySelector("input").value
+
+ document.querySelector("h2").innerHTML=`Voce pesquisou por:${palavra}`
+
+  fetch("http://localhost:4001/api/v1/livros/detalhes/titulo/"+palavra)
+    .then((res) => res.json())
+    .then((dados) => {
+      dados.payload.map((rs) => {
+        let card = `<div class="card mb-3"col-md-10 ;">
+        <div class="row g-0">
+          <div class="col-md-4">
+          <div id="carouselExample" class="carousel slide">
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img  src="${rs.foto1}" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+              <img src="${rs.foto2}" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+              <img src="${rs.foto3}" class="d-block w-100" alt="...">
+            </div>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+        
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h3 class="card-title">${rs.nometitulo}</h3>
+              <h5 class="card-title"> Autor:${rs.autor}</h5>
+             <p class="card-text precoatual">R$ ${rs.precodesconto < 1 ? rs.precoatual : rs.precodesconto}</p>
+             <a class = "btn btn-primary" href="detalhes.html?idtitulo=${rs.idtitulo}">Saiba mais</a>
+             </div>
+          </div>
+        </div>
+      </div>`
+
+        conteudo.innerHTML += card;
+
+      })
+    })
+    .catch((error) => console.error(`erro na api ${error}`))
+
+
+}
 
 
